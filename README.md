@@ -24,11 +24,11 @@ Komentojen edessä on `>` merkki. Sitä ei pidä käyttää komentojen kanssa va
 
 # Lataa uusimmat skriptit palvelimelle. Eri versiot löydät osoitteesta https://github.com/nyluntu/useful-scripts/tags
 # Kopioi tarvittaessa esimerkin komentoon uusin linkki zip-tiedstoon.
-> wget https://github.com/nyluntu/useful-scripts/archive/v1.1.zip
+> wget https://github.com/nyluntu/useful-scripts/archive/v1.2.zip
 
 # Purkaa ladatut tiedostot ja siirry kansioon. 
-> unzip v1.0.zip
-> cd useful-scripts-1.1
+> unzip v1.2.zip
+> cd useful-scripts-1.2
 
 # Paketin mukana on useita skriptejä ja niille kuuluu antaa suoritusoikeudet tai niitä ei voi ajaa.
 # Suoritusoikeudet voit varmistaa seuraavalla komennolla.
