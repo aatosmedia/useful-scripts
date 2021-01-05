@@ -24,10 +24,13 @@ guard_run_as_root() {
     fi
 }
 
-guard_user_exists() {
+guard_user_not_exists() {
     # $1 parameter is given username.
-    # $2 parameter is description that should be printed if user exists.
-    if id "$1" >/dev/null 2>&1; then
+    # $2 parameter is description that should be printed if user not exists.
+    if id "$1" >/dev/null 2>&1; 
+    then
+        echo "User $1 found."
+    else
         echo "$2"
         exit
     fi
@@ -46,7 +49,6 @@ read_mandatory_input() {
 # ======================
 # Main application start.
 # ======================
-
 
 # Read arguments and check mandatory input
 while getopts ":u:p:" opt; do
@@ -67,28 +69,24 @@ guard_run_as_root
 read_mandatory_input "$username" "Username not given: sudo $SCRIPT_FILENAME -u <username>"
 read_mandatory_input "$password" "Password not given: sudo $SCRIPT_FILENAME -u <username> -p <password>"
 
-# Prevent creating user that already exists in system.
-guard_user_exists "$username" "$username already exists. Script will skip this."
+guard_user_not_exists "$username" "Username not found. Create new user before running the script."
 
-# Will create user with home directory (-m) define shell (-s).
-# /etc/skel contains default home drectory structure.
-# Home folder location is /home/<username>
-useradd -m -s /bin/bash -G daemon $username
-print_message "$username:$password" | chpasswd
+# Will create .htpasswd and .htaccess files  to protect
+# publich_html folder.
+/opt/bitnami/apache/bin/htpasswd -cb /home/$username/.htpasswd $username $password
 
-# Will create public web folder to user with simple index.html file.
-mkdir /home/$username/public_html
-
-cat > /home/$username/public_html/index.html << EOF
-<html>
- <head>
- </head>
- <body>
-   <h1>Hello $username<h1>
- </body>
-</html>
+cat > /home/$username/public_html/.htaccess << EOF
+AuthType Basic
+AuthName "Authentication required"
+Require valid-user
+AuthUserFile "/home/$username/.htpasswd"
 EOF
 
 # Change right permissions to created folder and files.
+chmod 644 -R /home/$username/.htpasswd
+chown $username:$username -R /home/$username/.htpasswd
+
 chmod 770 -R /home/$username/public_html/
 chown daemon:daemon -R /home/$username/public_html
+
+print_message "Protected public_html with basic auth."

@@ -153,6 +153,10 @@ install_wordpress_site() {
         sudo -u $run_as_user -i -- wp-cli config create --path="$site_path" --dbname="$dbname" --dbuser="$dbusername" --dbhost="127.0.0.1" --dbpass="$dbpassword"
         sudo -u $run_as_user -i -- wp-cli core install --path="$site_path" --url="http://$MACHINE_PUBLIC_IP/~$site_name/wp" --title="My Wordpress site" --admin_user="$site_admin_username" --admin_email="$site_admin_username@mailinator.com" --admin_password="$site_admin_password" --skip-email
 
+        # Change right permissions to created folder and files.
+        chmod 770 -R /home/$username/public_html/
+        chown daemon:daemon -R /home/$username/public_html
+
         print_message "Wordpress installation for $username completed. Site url is http://$MACHINE_PUBLIC_IP/~$site_name/wp"
     else
         print_message "Wordpress installation found in $site_path. Skip installation."
