@@ -46,13 +46,14 @@ Komentojen edessä on `>` merkki. Sitä ei pidä käyttää komentojen kanssa va
 #
 ```
 
-:heavy_exclamation_mark: Tarkista tässä vaiheessa, että palvelimen esimerkkisivu näkyy sen ip osoitteessa. http://<palvelimen-ip-osoite>
+:heavy_exclamation_mark: Tarkista tässä vaiheessa, että palvelimen esimerkkisivu näkyy sen ip osoitteessa. `http://<palvelimen-ip-osoite>`
 
 :warning: Seuraava komento tulee tehdä vain kerran. Sitä ei tarvitse enää uudellen tehdä. Vaikka komennon ajaisi uudelleen niin mikään ei välttämättä mene rikki mutta tätä ei ole täysin varmistettu.
 
 Tarvitse myös bitnamin salasanan, joka virtuaalikoneen luonnin yhteydessä otettiin talteen. https://docs.bitnami.com/azure/faq/get-started/find-credentials/
 
 ```
+# Tee tämä vain kerran.
 > sudo ./configure-server.sh -p <bitnamin salasana>
 ```
 
@@ -91,14 +92,14 @@ Komennon ajaminen kestää hetken mutta lopputuloksena syntyy seuraavat asiat:
 - Luodaan käyttäjätunnukselle kotikansio /home/myusername1
 - Luodaan käyttäjälle julkinen web -kansio /home/myusername1/public_html
 - Suojataan julkinen web kansion .htpasswd suojauksella.
-- Luodaan Wordpress asennus kansioon public_html/wp ja joka löytyy sitten selaimella osoitteesta http://<palvelimen-ip-osoite/~~myusername1/wp
+- Luodaan Wordpress asennus kansioon public_html/wp ja joka löytyy sitten selaimella osoitteesta http://<palvelimen-ip-osoite/~myusername1/wp
 - public_html kansioon voidaan luoda vapaasti useampia kansioita tarpeen mukaan.
 - Luodaan vielä käyttäjälle oma erillinen Mysql tietokanta: default_myusername1. Wordpress asennuksen tietokanta on luotu erikseen nimellä wp_myusername1, joten ne eivät sekoita toisiaan.
 
 Tarkista, että verkkosivu näkyy osoiteissa:
 
-- http://<palvelimen-ip-osoite/~~myusername1/
-- http://<palvelimen-ip-osoite/~~myusername1/wp
+- http://<palvelimen-ip-osoite/~myusername1/
+- http://<palvelimen-ip-osoite/~myusername1/wp
 
 ## Käyttäjätunnukset ja salasanat
 
@@ -109,4 +110,14 @@ Kaikki käyttäjätunnukset ja salasanat on luotu edellisen vaiheen csv-tiedosto
 - .htpasswd suojauksessa on myös samat tunnukset.
 - Mysql tietokantaa varten myös samat tunnukset toimivat.
 
+# PHPMyAdmin
+
+// TODO kirjoita tämä vielä puhtaaksi. Lyhyt ohje käyttämisestä: https://docs.bitnami.com/ibm/faq/get-started/access-ssh-tunnel/
+
+# Muuta tärkeää
+
+- Ei haittaa vaikka saman käyttäjälistan ajaa komennolla useamman kerran. Skripteissä on pyritty tarkistamaan, että jos käyttäjä tai jokin muu asennus löytyy jo niin silloin ei tehdä mikään. Näin vahingossa ei mitään yliajeta.
+- Jos skripteihin tulee isompia muutoksia niin pyritään huolehtimaan ettei mitään vanhempaa tietoa häviä.
+- Skriptit on jaettu pienempiin osiin, joita voi käyttää myös erikseen mutta tärkein on `manage-users.sh` joka käyttää muita skriptejä apuna.
+- Jos tarvitset lisää tunnuksia niin tee uusi csv-tiedosto tai täydennä vanhan perään. Jossain tilanteessa on varmasti parempi pitää asiat omissa tiedostoissa. Tärkeää on, että samanniminen tunnus ei voi esiintyä missään kahteen kertaan.
 
