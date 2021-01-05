@@ -12,6 +12,10 @@ while getopts ":p:" opt; do
     esac
 done
 
+print_message() {
+	echo "$1"	
+}
+
 read_mandatory_input() {
     # $1 parameter is given username.
     # $2 parameter is description that should be printed if input not given.
