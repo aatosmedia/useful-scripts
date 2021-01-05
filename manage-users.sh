@@ -1,54 +1,8 @@
 #!/bin/bash
 
+# 
 # Script to install multiple Wordpress instances into single web server.
 # 
-# TODO: If using bitnami lamp stack, disable pagespeed module because can confuse students when js/css files are cached.
-# https://docs.bitnami.com/bch/apps/wordpress/administration/use-pagespeed/
-#
-# REQUIREMENTS 
-# 
-# LAMP environment installed. Script is tested with Bitnami LAMP stack.
-# https://bitnami.com/stack/lamp
-# 
-# Script will contain one Bitnami specific step. The last line, 'set_directory_permissions'
-# is optional and work only in Bitnami environment.
-#
-# EXAMPLE OF USAGE
-#
-# Run script in working directory that will hold the public wordpress sites.
-# htdocs or www -folder for example.
-#
-# > wp.sh -f mycsvfile.csv
-#
-# mycsvfile should have following content without header columns. Script will
-# read all rows and create multiple sites.
-#
-# username,password 
-#
-# Given information is used to create all credentials for website and database.
-#
-# IMPORTANT
-#
-# When script connect to database, it use mysql command. It will use current session
-# user. You should create my.cnf file in to home directory and set mysql credentials
-# that have rights to create new users and databases.
-#
-# my.cnf content:
-#
-# [client]
-# user=dbuser
-# password=dbpass
-#
-# MOTIVATION
-# 
-# Script was made for set up multiple Wordpress instances for students. It should be easy
-# to configurate any needs. You only need single web server and then environments is
-# ready for teaching Wordpress. The script is not for production usage.
-# 
-# AUTHOR
-#
-# Turo Nylund (turo.nylund@outlook.com) 
-#
 
 # =======================
 # Define global variables
@@ -89,7 +43,7 @@ run_add_normal_user_script() {
 	# Read site information from csv file.
 	# csv -file should have following columns.
 	# username;password
-	while IFS=';' read -r username password 
+	while IFS=';' read -r username password install_wp
 	do
             print_message "Handling $username"
             if [ -z "$username" ]
@@ -99,6 +53,19 @@ run_add_normal_user_script() {
             fi
 
             ./add-normal-user.sh -u $username -p $password
+
+            if [ -z "$install_wp" ]
+            then
+                # variable install_wp was empty
+                print_message "Skip wp installation ..."
+            else
+		if [ "$install_wp" == "wp" ]; then
+                    print_message "Install wp for user ..."
+                    ./add-wp-for-user.sh -u $username -p $password
+                fi
+    	    fi
+
+            printf "\n- - - - - - - - -\n"
 
 	done < $sites_in_file
 }

@@ -56,7 +56,7 @@
 
 SCRIPT_FILENAME=$0
 CURRENT_DIR=$(pwd)
-MACHINE_PUBLIC_IP=$(curl https://api.ipify.org)
+MACHINE_PUBLIC_IP=$(curl -s https://api.ipify.org)
 
 # ======================
 # Define functions
@@ -142,14 +142,22 @@ install_wordpress_site() {
     dbusername="$6"
     dbpassword="$7"
 
-    create_database_with_user $dbusername $dbpassword $dbname
-    print_message "Database \"$dbname\" created"
+    # Bash script for checking whether WordPress is installed or not
+    if ! $(sudo -u $run_as_user -i -- wp-cli core is-installed --path="$site_path")
+    then
+        create_database_with_user $dbusername $dbpassword $dbname
 
-    sudo -u $run_as_user -i -- wp-cli core download --path="$site_path"
-    sudo -u $run_as_user -i -- wp-cli config create --path="$site_path" --dbname="$dbname" --dbuser="$dbusername" --dbhost="127.0.0.1" --dbpass="$dbpassword"
-    sudo -u $run_as_user -i -- wp-cli core install --path="$site_path" --url="http://$MACHINE_PUBLIC_IP/~$site_name/wp" --title="My Wordpress site" --admin_user="$site_admin_username" --admin_email="$site_admin_username@mailinator.com" --admin_password="$site_admin_password" --skip-email
+        print_message "Database \"$dbname\" created"
 
-    print_message "Wordpress installation for $username completed. Site url is http://$MACHINE_PUBLIC_IP/$site_name/wp"
+        sudo -u $run_as_user -i -- wp-cli core download --path="$site_path"
+        sudo -u $run_as_user -i -- wp-cli config create --path="$site_path" --dbname="$dbname" --dbuser="$dbusername" --dbhost="127.0.0.1" --dbpass="$dbpassword"
+        sudo -u $run_as_user -i -- wp-cli core install --path="$site_path" --url="http://$MACHINE_PUBLIC_IP/~$site_name/wp" --title="My Wordpress site" --admin_user="$site_admin_username" --admin_email="$site_admin_username@mailinator.com" --admin_password="$site_admin_password" --skip-email
+
+        print_message "Wordpress installation for $username completed. Site url is http://$MACHINE_PUBLIC_IP/~$site_name/wp"
+    else
+        print_message "Wordpress installation found in $site_path. Skip installation."
+    fi
+
 }
 
 # ======================
