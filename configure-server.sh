@@ -39,8 +39,8 @@ guard_run_as_root
 read_mandatory_input "$password" "Bitnami password not given. See https://docs.bitnami.com/azure/faq/get-started/find-credentials/"
 
 # Enable userdir module for public_html folders
-sed -i -e "/#LoadModule userdir_module/c\LoadModule userdir_module modules/mod_userdir.so" /home/bitnami/stack/apache2/conf/original/httpd.conf
-sed -i -e "/httpd-userdir.conf/c\Include conf/extra/httpd-userdir.conf" /home/bitnami/stack/apache2/conf/original/httpd.conf
+sed -i -e "/#LoadModule userdir_module/c\LoadModule userdir_module modules/mod_userdir.so" /home/bitnami/stack/apache2/conf/httpd.conf
+sed -i -e "/httpd-userdir.conf/c\Include conf/extra/httpd-userdir.conf" /home/bitnami/stack/apache2/conf/httpd.conf
 sed -i -e "/UserDir public_html/a\UserDir disabled root bitnami $USER" /home/bitnami/stack/apache2/conf/extra/httpd-userdir.conf
 
 # Configure default mysql user that is used to connect database.

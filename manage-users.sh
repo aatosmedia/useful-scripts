@@ -54,6 +54,7 @@ run_add_normal_user_script() {
 
             ./add-normal-user.sh -u $username -p $password
             ./add-basic-auth.sh -u $username -p $password
+            ./add-mysql-db-for-user.sh -u $username -p $password -n "default_${username}"
 
             if [ -z "$install_wp" ]
             then

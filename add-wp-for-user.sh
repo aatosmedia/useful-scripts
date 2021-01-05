@@ -98,7 +98,7 @@ create_database_with_user() {
     # $2 is password for user
     # $3 is database name
     SQL_COMMAND="CREATE DATABASE ${3} /*!40100 COLLATE \"utf8_general_ci\" */;"
-    SQL_COMMAND+="CREATE USER '${1}'@'%' IDENTIFIED BY '${2}';"
+    SQL_COMMAND+="CREATE USER IF NOT EXISTS '${1}'@'%' IDENTIFIED BY '${2}';"
     SQL_COMMAND+="GRANT USAGE ON *.* TO '${1}'@'%';"
     SQL_COMMAND+="GRANT SELECT, EXECUTE, SHOW VIEW, ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, INDEX, INSERT, REFERENCES, TRIGGER, UPDATE  ON ${3}.* TO '${1}'@'%';"
     SQL_COMMAND+="FLUSH PRIVILEGES;"
@@ -107,21 +107,6 @@ create_database_with_user() {
     # print_message "$SQL_COMMAND"
 
     mysql --execute="$SQL_COMMAND"
-}
-
-wordpress_modify_configs() {
-	site=$1
-        dbuser=$2 
-        dbpass=$3 
-        dbname=$4
-
-	#create wp config
-	cp ./$site/wp-config-sample.php ./$site/wp-config.php
-
-	# will define FS_METHOD type.
-	# FS_METHOD This setting forces the filesystem (or connection) method.
-	# direct means that plugins can be installed without ftp connection 
-	sed -i -e "/DB_COLLATE/a\define(\'FS_METHOD\', \'direct\');" ./$site/wp-config.php 
 }
 
 install_wordpress_site() {
