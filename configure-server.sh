@@ -89,4 +89,5 @@ EOF
 
 # Restart all services
 sudo /opt/bitnami/ctlscript.sh restart
+sudo /opt/bitnami/ctlscript.sh restart apache
 
