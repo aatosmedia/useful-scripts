@@ -83,7 +83,7 @@ Nyt edellisessä vaiheessa on valmisteltu kaikki tarpeellinen ja voidaan siirty�
 
 # Kun käyttäjälistasi on haluamasi näköinen niin jatka seuraavalla komennolla,
 # joka viimeistelee asennukset.
-sudo ./manage-users.sh -f kayttajalista.csv
+> sudo ./manage-users.sh -f kayttajalista.csv
 ```
 
 Komennon ajaminen kestää hetken mutta lopputuloksena syntyy seuraavat asiat:
