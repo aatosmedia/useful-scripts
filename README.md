@@ -121,3 +121,43 @@ Kaikki käyttäjätunnukset ja salasanat on luotu edellisen vaiheen csv-tiedosto
 - Skriptit on jaettu pienempiin osiin, joita voi käyttää myös erikseen mutta tärkein on `manage-users.sh` joka käyttää muita skriptejä apuna.
 - Jos tarvitset lisää tunnuksia niin tee uusi csv-tiedosto tai täydennä vanhan perään. Jossain tilanteessa on varmasti parempi pitää asiat omissa tiedostoissa. Tärkeää on, että samanniminen tunnus ei voi esiintyä missään kahteen kertaan.
 
+# htpasswd tunnusten luominen (add-htpasswd-account.sh)
+
+Aja komennot siinä kansiossa missä aiemmatkin ovat olleet.
+
+```
+# Haetaan ensin oikea skripti, joka luo htpasswd tunnuksia käyttäjälistan mukaan.
+# Tämä siis tekee yhdet yleiset tunnukset kaikille public_html -kansioille csv-listan mukaan.
+> wget https://raw.githubusercontent.com/nyluntu/useful-scripts/main/add-htpasswd-account.sh
+
+# Suoritusoikeudet voit varmistaa seuraavalla komennolla.
+> chmod +x *.sh
+
+# Aja sripti komennolla, jossa:
+# - yleinentunnus tilalle kirjoita se mitä halutaan käyttää.
+# - yleinensalasana tilalle yhteinen salasana.
+# - kayttajalista.csv tilalle polku csv-tiedostoon, jossa listaus käyttäjistä.
+> sudo ./add-htpasswd-account.sh -u yleinentunnus -p yleinensalasana -f kayttajalista.csv
+```
+
+Alla vielä esimerkki edellisen skriptin tulosteesta miltä näyttää toimiessaan.
+
+```
+bitnami@hamkwordpress:~/useful-scripts-1.2$ sudo ./add-htpasswd-account.sh -u vierailija -p vierailija123 -f kayttajalista.csv
+Handling /home/myusername1/.htpasswd
+Adding password for user vierailija
+
+- - - - - - - - -
+Handling /home/myusername2/.htpasswd
+Updating password for user vierailija
+
+- - - - - - - - -
+Handling /home/myusername3/.htpasswd
+Adding password for user vierailija
+
+- - - - - - - - -
+Handling /home//.htpasswd
+Skip empty line ...
+htpasswd credentials created.
+```
+
