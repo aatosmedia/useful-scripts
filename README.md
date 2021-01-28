@@ -112,7 +112,7 @@ Kaikki käyttäjätunnukset ja salasanat on luotu edellisen vaiheen csv-tiedosto
 
 # PHPMyAdmin
 
-// TODO kirjoita tämä vielä puhtaaksi. Lyhyt ohje käyttämisestä: https://docs.bitnami.com/ibm/faq/get-started/access-ssh-tunnel/
+Katso video SSH tunnelin luomisesta: https://www.youtube.com/watch?v=XIAKM0SnsGY
 
 # Muuta tärkeää
 
@@ -161,3 +161,29 @@ Skip empty line ...
 htpasswd credentials created.
 ```
 
+# OPCache määrittäminen pois käytöstä
+
+TODO: laita seuraavat muutokset palvelimen asennusskripteihin.
+
+[OPCache](https://www.php.net/manual/en/intro.opcache.php) on lisä osa PHP:lle, joka esikääntää PHP tiedostot kun ne ajetaan ensimmäisen kerran. Käännetyt tiedostot säilyvät välimuistissa määritettyjen asetusten mukaisesti. Lisäosan tarkoitus on nopeuttaa sivujen latausta siten, että joka kerta kun sivu pyydetään Apache verkkopalvelimelta, sen ei tarvitse kääntää PHP koodia. Välimuistin kanssa toimii kyllä dynaaminen sisältö, koska eri PHP funktiot ovat olemassa käännetyssä versiossa ja suoritetaan. Jos sivulla on paljon staattista sisältöä, esimerkiksi **echo** komentoa käyttäen tulostettu, niin sisältö ei aina muutu.
+
+Tämän ominaisuuden saa pois seuraavalla tavalla.
+
+```
+# Avaa php.ini tiedosto pääkäyttäjänä.
+
+> sudo nano /home/bitnami/stack/php/etc/php.ini
+
+# Etsi tiedostosta seuraava rivit ja anna niille esimerkin mukaiset arvot.
+# Tallenna tiedosto lopuksi.
+
+opcache.enable = 0
+opcache.enable_cli = 0
+
+# Käynnistä palvelut uudelleen.
+# Vähintään pitää käynnistää php-fpm palvelu mutta seuraava komento käynnistää
+# kyllä kaikki. Jos pelkkä apache palvelimen prosessi käynnistetään niin 
+# edellä tehdyt muutokset eivät tule voimaan.
+
+> sudo /opt/bitnami/ctlscript.sh restart
+```
