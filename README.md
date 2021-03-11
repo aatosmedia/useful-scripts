@@ -6,6 +6,27 @@ Sisältö on toteutettu alunperin usean wordpress asennuksen tekemistä varten o
 
 # Palvelimen asentaminen kuntoon
 
+Alla typistetty ohjeistus vaiheittain. Tämän jälkeen löytyy vielä tarkemmin muita huomioita palvelimen asentamiseen mitkä suositellaan käyvän lävitse.
+
+## TL;DR; 
+
+1. Pilvipalvelusta portal.azure.com/ valitse Create/Add Resource
+2. Etsi Bitnami Lamp (Muista painaa enteriä. Ei välttämättä tule muuten näkyviin) ja valitse se.
+3. Klikkaa Create
+4. Resource Group -kohtaan ryhmän nimi tyyliin: BitP20-Web-kehitys
+5. Virtual Machine Name -kohtaan: bitP20wk     
+6. Availability options kohdasta voi valita: *No infrastructure redundancy required*
+7. Size-kohtaan: Standard D2s v3 (Videolla valittu oli aika hidas, koska opiskelijaryhmät ovat sen verran isoja)
+8. Authentication type: Password (tämä siis on palvelimen pääkäyttätunnus)
+9. Nextillä Management-kohtaan, jossa varmistetaan, että Boot diagnostics on Enabled
+10. Nextillä eteenpäin viimeiselle sivulle ja Create (luo virtuaalikonetta muutaman minuutin)
+11. Go to Resource
+12. Vasemmalta Boot Diagnostics > Serial Log -välilehti
+13. Etsi logista "Setting Bitnami application password to" ja kopioi salasana talteen
+14. Vasemmalta Overview-kohdasta näkyy esim. IP-osoite (palvelin ei välttämättä vastaa ihan heti asennuksen loputtua)
+15. Kirjaudu Puttyllä palvelimelle kohdassa 8 luoduilla tunnuksilla
+
+
 ## Azure virtuaalikone
 
 Esimerkissä käytetään virtuaalikonetta Microsoftin Azure pilvipalvelusta. Virtuaalikoneen pohjana on Bitnamin LAMP virtuaalikoneen kuva. Asenna virtuaalikone ensin seuraavan videon mukaisesti https://www.youtube.com/watch?v=ugbj3Z3FNcE
@@ -113,6 +134,14 @@ Kaikki käyttäjätunnukset ja salasanat on luotu edellisen vaiheen csv-tiedosto
 # PHPMyAdmin
 
 Katso video SSH tunnelin luomisesta: https://www.youtube.com/watch?v=XIAKM0SnsGY
+
+Videolla esiintyvä komento, jolla SSH tunneli luodaan.
+
+`ssh -N -L 8888:127.0.0.1:80 käyttäjätunnus@palvelimen-ip`
+
+Kokeile tullin luomisen jälkeen seuraavaa osoitetta:
+
+`http://localhost:8888/phpmyadmin/`
 
 # Muuta tärkeää
 
