@@ -22,7 +22,7 @@ Alla typistetty ohjeistus vaiheittain. Tämän jälkeen löytyy vielä tarkemmin
 10. Nextillä eteenpäin viimeiselle sivulle ja Create (luo virtuaalikonetta muutaman minuutin)
 11. Go to Resource
 12. Vasemmalta Boot Diagnostics > Serial Log -välilehti
-13. Etsi logista "Setting Bitnami application password to" ja kopioi salasana talteen
+13. Etsi logista "Setting Bitnami application password to" ja kopioi salasana talteen. Tätä salasanaa tarvitsee seuraavassa kohdassa. Lisäksi tämä on MySQL-palvelimen root-käyttäjän salasana.
 14. Vasemmalta Overview-kohdasta näkyy esim. IP-osoite (palvelin ei välttämättä vastaa ihan heti asennuksen loputtua)
 15. Kirjaudu Puttyllä palvelimelle kohdassa 8 luoduilla tunnuksilla
 
@@ -135,13 +135,15 @@ Kaikki käyttäjätunnukset ja salasanat on luotu edellisen vaiheen csv-tiedosto
 
 Katso video SSH tunnelin luomisesta: https://www.youtube.com/watch?v=XIAKM0SnsGY
 
-Videolla esiintyvä komento, jolla SSH tunneli luodaan.
+Videolla esiintyvä komento, jolla SSH tunneli luodaan. Avaa Windowssin komentokehote ja kirjoita:
 
 `ssh -N -L 8888:127.0.0.1:80 käyttäjätunnus@palvelimen-ip`
 
 Kokeile tullin luomisen jälkeen seuraavaa osoitetta:
 
 `http://localhost:8888/phpmyadmin/`
+
+MySQL-pääkäyttäjä on root ja salasana on se, mikä poimitaan palvelimen asennuskohdassa 12 (Serial Log).
 
 # Muuta tärkeää
 
